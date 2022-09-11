@@ -30,6 +30,8 @@ $$ b^l_j → b^l_j -\frac{\eta}{m}\frac{\partial C_x}{\partial b^l_j} $$
 **Backpropagation:**
 
 La idea basica de esto es que nos preguntamos que pasa si hacemos un pequeño cambio a un peso $\Delta w$, esto produce un cambio en la funcion de costo $\Delta C$, esto es en sí, regla de la cadena
+
+
 $$ \Delta C = \frac{\partial C}{\partial a^L_m}\frac{\partial a^L_m}{\partial a^{L-1}_n}... \frac{\partial a^l_j}{\partial w^l_{jk}}\Delta w^l_{jk} $$
 
 aqui definimos algunas variables 
