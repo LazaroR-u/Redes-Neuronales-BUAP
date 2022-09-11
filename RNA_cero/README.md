@@ -48,7 +48,7 @@ Error: $\quad \quad \delta^L_j = \frac{\partial C}{\partial z^L_j}= \frac{\parti
 Derivadas parciales de la funcion de costo:
 
 $$\frac{\partial C_x}{\partial w^l_{jk}} = \delta^l_j a^{l-1}_k,  \quad \quad \frac{\partial C_x}{\partial b^l_{j}} = \delta^l_j $$
-=======
+
 
 $$\frac{\partial C_x}{\partial w^l_{jk}} = \delta^l_j a^{l-1}_k,  \quad \quad \frac{\partial C_x}{\partial b^l_{j}} = \delta^l_j $$
 
