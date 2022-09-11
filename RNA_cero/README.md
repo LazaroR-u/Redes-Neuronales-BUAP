@@ -10,7 +10,8 @@ Los pesos w son los encargados de darle la importancia a cada neurona, estos mid
 
 **Propagacion directa**: 
 
-Se refiere a que dado los parametros, vemos cual es el valor de activacion de salida  $$a^l_j = \sigma(w^l_{jk}\cdot a^{l-1}_k+b^l_j)  =\frac{1}{1+e^{-({w}\cdot{a}+b)}}= \sigma(z^l_j)$$.
+Se refiere a que dado los parametros, vemos cual es el valor de activacion de salida 
+ $$a^l_j = \sigma(w^l_{jk}\cdot a^{l-1}_k+b^l_j)  =\frac{1}{1+e^{-({w}\cdot{a}+b)}}= \sigma(z^l_j)$$.
 
 **Stochastic Gradient Descent**: 
 
@@ -46,11 +47,11 @@ Error: $\quad \quad \delta^L_j = \frac{\partial C}{\partial z^L_j}= \frac{\parti
 
 Derivadas parciales de la funcion de costo:
 
-<<<<<<< HEAD
 $$\frac{\partial C_x}{\partial w^l_{jk}} = \delta^l_j a^{l-1}_k,  \quad \quad \frac{\partial C_x}{\partial b^l_{j}} = \delta^l_j $$
 =======
-$\frac{\partial C_x}{\partial w^l_{jk}} = \delta^l_j a^{l-1}_k,  \quad \quad \frac{\partial C_x}{\partial b^l_{j}} = \delta^l_j $
->>>>>>> 8c3bdc3e862ed3571c36149d464bd84198263f2b
+
+$$\frac{\partial C_x}{\partial w^l_{jk}} = \delta^l_j a^{l-1}_k,  \quad \quad \frac{\partial C_x}{\partial b^l_{j}} = \delta^l_j $$
+
 
 En resumen, 
 
