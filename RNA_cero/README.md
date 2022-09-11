@@ -43,7 +43,8 @@ Funcion de costo: $\quad \quad C_x = \frac{1}{2} ||y(x) -a^L||^2$
 Error: $\quad \quad \delta^L_j = \frac{\partial C}{\partial z^L_j}= \frac{\partial C}{\partial a^L_j}\frac{\partial a^L_j}{\partial z^L_j}= (a^L_j -y(x))\, \sigma'(z^L_j) $
 
 Derivadas parciales de la funcion de costo:
-$\frac{\partial C_x}{\partial w^l_{jk}} = \delta^l_j a^{l-1}_k,  \quad \quad \frac{\partial C_x}{\partial b^l_{j}} = \delta^l_j $
+
+$$\frac{\partial C_x}{\partial w^l_{jk}} = \delta^l_j a^{l-1}_k,  \quad \quad \frac{\partial C_x}{\partial b^l_{j}} = \delta^l_j $$
 
 En resumen, 
 
@@ -52,16 +53,19 @@ En resumen,
 
 
 > 2. Calculamos el error $\delta^l$ 
+
 $$ \delta^l = \nabla_{a^l}C\cdot\sigma'(z^l) $$
 
 
 
 > 3. Propagamos hacia atras el error: 
+
 $$ \delta^l = ((w^{l+1} )^T\delta^{l+1}) \sigma'(z^l)$$
 
 
 
 > 4. Salida: Finalmente calculamos las componentes del gradiente $∇_{a^l}C_x$
+
 $$\frac{\partial C_x}{\partial w^l_{jk}} = \delta^l_j a^{l-1}_k,  \quad \quad \frac{\partial C_x}{\partial b^l_{j}} = \delta^l_j $$
 
 
