@@ -5,6 +5,7 @@ Created on Tue Sep  6 18:01:17 2022
 @author: Lazaro Diaz
 """
 
+
 #### Libraries
 # Standard library
 import random
@@ -105,15 +106,17 @@ class Network(object):
         activations = [x] # list to store all the activations, layer by layer
         zs = [] # list to store all the z vectors, layer by layer
         for b, w in zip(self.biases, self.weights):
-            z = np.dot(w, activation)+b
-            zs.append(z)
+            z = np.dot(w, activation)+b #z=wx+b
+            zs.append(z)  #agregamos cada z a la lista de zs
             activation = sigmoid(z)
             activations.append(activation)
         # backward pass
-        delta = self.cost_derivative(activations[-1], y) * \
-            sigmoid_prime(zs[-1])
-        nabla_b[-1] = delta
-        nabla_w[-1] = np.dot(delta, activations[-2].transpose())
+        delta = 1/len(activations)*self.cost_derivative(activations[-1], y) * \
+            sigmoid_prime(zs[-1]) #calculamos el error de la ultima capa
+        nabla_b[-1] = delta  #definimos la derivada parcial de la funcion de costo 
+        #respecto a b
+        nabla_w[-1] = np.dot(delta, activations[-2].transpose()) #definimos la derivada 
+        #parcial de la funcion de costo respecto a w 
         # Note that the variable l in the loop below is used a little
         # differently to the notation in Chapter 2 of the book.  Here,
         # l = 1 means the last layer of neurons, l = 2 is the
@@ -140,7 +143,7 @@ class Network(object):
     def cost_derivative(self, output_activations, y):
         """Return the vector of partial derivatives \partial C_x /
         \partial a for the output activations."""
-        return (output_activations-y)
+        return (output_activations-y)/output_activations*(1-output_activations)
 
 
 #### Miscellaneous functions
@@ -152,3 +155,4 @@ def sigmoid(z):
 def sigmoid_prime(z):
     """Derivative of the sigmoid function."""
     return sigmoid(z)*(1-sigmoid(z))
+

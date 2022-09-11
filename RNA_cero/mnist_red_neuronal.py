@@ -29,18 +29,18 @@ net = network.Network([784,30,10])
 net.SGD( training_data, 30, 10, 3.0, test_data=test_data)
 
 #
-archivo = open("red_prueba1.pkl",'wb')
+archivo = open("red_prueba_ce.pkl",'wb')
 
 
 pickle.dump(net,archivo)
 archivo.close()
 exit()
 #leer el archivo
-archivo_lectura = open("red_prueba.pkl",'rb')
+archivo_lectura = open("red_prueba_ce2.pkl",'rb')
 net = pickle.load(archivo_lectura)
 archivo_lectura.close()
 net.SGD( training_data, 10, 50, 0.5, test_data=test_data)
-archivo = open("red_prueba.pkl",'wb')
+archivo = open("red_prueba_ce2.pkl",'wb')
 pickle.dump(net,archivo)
 
 #archivo.close()
