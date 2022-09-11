@@ -30,6 +30,8 @@ $$ b^l_j → b^l_j -\frac{\eta}{m}\frac{\partial C_x}{\partial b^l_j} $$
 **Backpropagation:**
 
 La idea basica de esto es que nos preguntamos que pasa si hacemos un pequeño cambio a un peso $\Delta w$, esto produce un cambio en la funcion de costo $\Delta C$, esto es en sí, regla de la cadena
+
+
 $$ \Delta C = \frac{\partial C}{\partial a^L_m}\frac{\partial a^L_m}{\partial a^{L-1}_n}... \frac{\partial a^l_j}{\partial w^l_{jk}}\Delta w^l_{jk} $$
 
 aqui definimos algunas variables 
@@ -44,7 +46,11 @@ Error: $\quad \quad \delta^L_j = \frac{\partial C}{\partial z^L_j}= \frac{\parti
 
 Derivadas parciales de la funcion de costo:
 
+<<<<<<< HEAD
 $$\frac{\partial C_x}{\partial w^l_{jk}} = \delta^l_j a^{l-1}_k,  \quad \quad \frac{\partial C_x}{\partial b^l_{j}} = \delta^l_j $$
+=======
+$\frac{\partial C_x}{\partial w^l_{jk}} = \delta^l_j a^{l-1}_k,  \quad \quad \frac{\partial C_x}{\partial b^l_{j}} = \delta^l_j $
+>>>>>>> 8c3bdc3e862ed3571c36149d464bd84198263f2b
 
 En resumen, 
 
