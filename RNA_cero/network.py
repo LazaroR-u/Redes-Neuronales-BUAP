@@ -42,6 +42,7 @@ class Network(object):
             
         return a
 
+    #OPTIMIZADOR SGD
     def SGD(self, training_data, epochs, mini_batch_size, eta,
             test_data=None):
         """Train the neural network using mini-batch stochastic
@@ -52,6 +53,48 @@ class Network(object):
         network will be evaluated against the test data after each
         epoch, and partial progress printed out.  This is useful for
         tracking progress, but slows things down substantially."""
+
+        training_data = list(training_data)
+        n = len(training_data)
+
+        if test_data:
+            test_data = list(test_data)
+            n_test = len(test_data)
+
+        for j in range(epochs):
+            random.shuffle(training_data)
+            mini_batches = [
+                training_data[k:k+mini_batch_size]
+                for k in range(0, n, mini_batch_size)]
+            for mini_batch in mini_batches:
+                self.update_mini_batch_SGD(mini_batch, eta)
+            if test_data:
+                print("Epoch {} : {} / {}".format(j,self.evaluate(test_data),n_test))
+            else:
+                print("Epoch {} complete".format(j))
+
+    def update_mini_batch_SGD(self, mini_batch, eta):
+        """Update the network's weights and biases by applying
+        gradient descent using backpropagation to a single mini batch.
+        The ``mini_batch`` is a list of tuples ``(x, y)``, and ``eta``
+        is the learning rate."""
+        nabla_b = [np.zeros(b.shape) for b in self.biases]
+        nabla_w = [np.zeros(w.shape) for w in self.weights]
+        for x, y in mini_batch:
+            delta_nabla_b, delta_nabla_w = self.backprop(x, y)
+            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
+            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
+        self.weights = [w-(eta/len(mini_batch))*nw
+                        for w, nw in zip(self.weights, nabla_w)]
+        self.biases = [b-(eta/len(mini_batch))*nb
+                       for b, nb in zip(self.biases, nabla_b)]
+    
+    
+    
+    
+    #OPTIMIZADOR STOCHASTIC GRADIENT DESCENT CON MOMENTUM
+    def SGD_momentum(self, training_data, epochs, mini_batch_size, eta, momentum,
+            test_data=None):
 
         training_data = list(training_data)
         n = len(training_data)
@@ -71,29 +114,86 @@ class Network(object):
                 #mini_batches. 
 
             for mini_batch in mini_batches:
-                self.update_mini_batch(mini_batch, eta)
+                self.update_mini_batch_SGD_momentum(mini_batch, eta, momentum)
+            if test_data:
+                print("Epoch {} : {} / {}".format(j,self.evaluate(test_data),n_test)) #devuelve 
+                #por ejemplo:  Epoch 9 : 9501 / 10000. numero de epoca,     y el numero total de datos de prueba
+            else:
+                print("Epoch {} complete".format(j))
+    
+    
+    def update_mini_batch_SGD_momentum(self, mini_batch, eta, momentum ):
+        #agregamos un vector de ceros para vdw y vdb, los cuales almacenaran informacion sobre el momentum
+        nabla_b = [np.zeros(b.shape) for b in self.biases] #vector de ceros con la forma de b
+        nabla_w = [np.zeros(w.shape) for w in self.weights] #vector de ceros con la forma de w
+        vdw=[np.zeros(w.shape) for w in self.weights] 
+        vdb=[np.zeros(b.shape) for b in self.biases]
+        
+        for x, y in mini_batch:
+            delta_nabla_b, delta_nabla_w = self.backprop(x, y)
+            nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
+            nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
+            vdw = [momentum*nvdw + (1-momentum)*(dnw) for nvdw, dnw in zip(vdw, nabla_w)]
+            vdb = [momentum*nvdb +(1-momentum)*(dnb) for nvdb,dnb in zip(vdb, nabla_b)]
+        
+        
+        
+        self.weights = [w-eta*nvdw for w, nvdw in zip(self.weights, vdw)]
+        self.biases = [b-eta*nvdb for b, nvdb in zip(self.biases, vdb)]
+    
+    
+    
+    
+    
+    #OPTIMIZADOR RMSprop 
+    def RMSprop(self, training_data, epochs, mini_batch_size, eta, beta,
+            test_data=None):
+
+        training_data = list(training_data)
+        n = len(training_data)
+
+        if test_data:
+            test_data = list(test_data)
+            n_test = len(test_data)
+
+        for j in range(epochs): #haremos la segmentacion de acuerdo al numero de epocas que tengamos. 
+        
+        #si tenemos 30 epocas significa que segmentaremos todos nuestros datos de entr. de forma aleatoria 30 veces.
+            random.shuffle(training_data)
+            
+            mini_batches = [
+                training_data[k:k+mini_batch_size]
+                for k in range(0, n, mini_batch_size)] #segmentacion de los datos de entrenamiento, los volvemos 
+                #mini_batches. 
+
+            for mini_batch in mini_batches:
+                self.update_mini_batch_RMS(mini_batch, eta, beta)
             if test_data:
                 print("Epoch {} : {} / {}".format(j,self.evaluate(test_data),n_test)) #devuelve 
                 #por ejemplo:  Epoch 9 : 9501 / 10000. numero de epoca,     y el numero total de datos de prueba
             else:
                 print("Epoch {} complete".format(j))
 
-    def update_mini_batch(self, mini_batch, eta):
-        """Update the network's weights and biases by applying
-        gradient descent using backpropagation to a single mini batch.
-        The ``mini_batch`` is a list of tuples ``(x, y)``, and ``eta``
-        is the learning rate."""
+    def update_mini_batch_RMS(self, mini_batch, eta, beta ):
+        
         nabla_b = [np.zeros(b.shape) for b in self.biases] #vector de ceros con la forma de b
         nabla_w = [np.zeros(w.shape) for w in self.weights] #vector de ceros con la forma de w
+        vdw=[np.zeros(w.shape) for w in self.weights]
+        vdb=[np.zeros(b.shape) for b in self.biases]
+        
         for x, y in mini_batch:
             delta_nabla_b, delta_nabla_w = self.backprop(x, y)
             nabla_b = [nb+dnb for nb, dnb in zip(nabla_b, delta_nabla_b)]
             nabla_w = [nw+dnw for nw, dnw in zip(nabla_w, delta_nabla_w)]
-        self.weights = [w-(eta/len(mini_batch))*nw
-                        for w, nw in zip(self.weights, nabla_w)]
-        self.biases = [b-(eta/len(mini_batch))*nb
-                       for b, nb in zip(self.biases, nabla_b)]
-
+            vdw = [beta*nvdw + (1-beta)*np.square(dnw) for nvdw, dnw in zip(vdw, nabla_w)]
+            vdb = [beta*nvdb +(1-beta)*np.square(dnb) for nvdb,dnb in zip(vdb, nabla_b)]
+           
+        
+        self.weights = [w-eta/(np.sqrt(nvdw+1e-08))*nw for nvdw, w, nw in zip(vdw, self.weights, nabla_w)]
+        self.biases = [b-eta/(np.sqrt(nvdb+1e-08))*nb for nvdb, b, nb in zip(vdb, self.biases, nabla_b)]
+        
+        
+        
     def backprop(self, x, y):
         """Return a tuple ``(nabla_b, nabla_w)`` representing the
         gradient for the cost function C_x.  ``nabla_b`` and
